@@ -1,1 +1,1 @@
-# Course-CPP-Pro
+# Шаблон настройки GitHub Actions
