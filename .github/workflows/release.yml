@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - Lesson1
+      - Lesson2
       - feature/github_actions
 
 jobs:
