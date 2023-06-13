@@ -45,7 +45,7 @@ void work_with_my_vector(size_t _size)
     std::for_each(vec.begin(), vec.end(), [](auto &res)
                   { std::cout << res << std::endl; });
 }
-int main(int argc, char const **argv)
+int main(int, char const **)
 {
 
     work_with_map_n_allocator(5);

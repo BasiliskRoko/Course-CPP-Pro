@@ -29,15 +29,13 @@ add_executable(1877_bycicle_codes 1877_bycicle_codes.cpp)
 add_executable(2001_mathNberry 2001_mathNberry.cpp)
 
 
-
+list(APPEND TARGETS homework lib 1264_working_days 1409_two_bandits 1787_turn_on_Mega 1877_bycicle_codes 2001_mathNberry test_version)
 
 foreach(target ${TARGETS})
     target_compile_features(${target} PUBLIC cxx_std_17)
     set_target_properties(${target} PROPERTIES 
         CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-        CMAKE_CXX_STANDARD 17
-        CMAKE_CXX_STANDARD_REQUIRED ON)
+        CXX_STANDARD_REQUIRED ON)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
         CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
@@ -50,7 +48,7 @@ foreach(target ${TARGETS})
     endif()
 endforeach()
 
-list(APPEND TARGETS homework lib 1264_working_days 1409_two_bandits 1787_turn_on_Mega 1877_bycicle_codes 2001_mathNberry test_version)
+
 
 target_include_directories(lib
     PRIVATE "${CMAKE_BINARY_DIR}"
