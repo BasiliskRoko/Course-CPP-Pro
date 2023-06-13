@@ -25,7 +25,7 @@ struct std_11_simple_allocator
         array_pull.push_back(nullptr);
         array_pull.back().reset(reinterpret_cast<T *>(::operator new(PoolSize * sizeof(T))));
         array_size.push_back(std::make_pair(PoolSize, usedIndex(PoolSize, 0)));
-    };
+    }
 
     T *allocate(std::size_t n)
     {
