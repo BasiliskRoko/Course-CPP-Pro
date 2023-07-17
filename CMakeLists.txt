@@ -18,18 +18,31 @@ add_library(lib lib.cpp)
 
 add_executable(test_version test_version.cpp)
 
-add_executable(1264_working_days 1264_working_days.cpp)
+add_executable(1000_AplusB_Problem 1000_AplusB_Problem.cpp)
 
-add_executable(1409_two_bandits 1409_two_bandits.cpp)
+add_executable(1001_reverse_root 1001_reverse_root.cpp)
 
-add_executable(1787_turn_on_Mega 1787_turn_on_Mega.cpp)
+add_executable(1293_Aniya 1293_Aniya.cpp)
 
-add_executable(1877_bycicle_codes 1877_bycicle_codes.cpp)
+add_executable(1785_Localization_difficulties 1785_Localization_difficulties.cpp)
 
-add_executable(2001_mathNberry 2001_mathNberry.cpp)
+add_executable(1880_Eigenvalues_Psych_Up 1880_Eigenvalues_Psych_Up.cpp)
 
+add_executable(2012_About_Grisha_N 2012_About_Grisha_N.cpp)
 
-list(APPEND TARGETS homework lib 1264_working_days 1409_two_bandits 1787_turn_on_Mega 1877_bycicle_codes 2001_mathNberry test_version)
+add_executable(1820_Ural_steaks 1820_Ural_steaks.cpp)
+
+add_executable(2066_Simple_expression 2066_Simple_expression.cpp)
+
+add_executable(1197_One_in_the_field_warrior 1197_One_in_the_field_warrior.cpp)
+
+add_executable(2100_Wedding_dinner 2100_Wedding_dinner.cpp)
+
+list(APPEND TARGETS homework lib   
+1000_AplusB_Problem 1001_reverse_root 
+1293_Aniya 1785_Localization_difficulties 1880_Eigenvalues_Psych_Up 2012_About_Grisha_N
+1820_Ural_steaks 2066_Simple_expression 1197_One_in_the_field_warrior 2100_Wedding_dinner
+test_version)
 
 foreach(target ${TARGETS})
     target_compile_features(${target} PUBLIC cxx_std_17)
