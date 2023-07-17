@@ -6,6 +6,7 @@ on:
       - Lesson1
       - Lesson2
       - Lesson6
+      - Lesson7
       - feature/github_actions
 
 jobs:
