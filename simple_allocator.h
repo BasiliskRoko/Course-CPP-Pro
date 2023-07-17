@@ -13,6 +13,8 @@ struct std_11_simple_allocator
     std::size_t PoolSize = 5;
     std::size_t PoolIncrement = 1;
 
+    std::size_t SizeType = 0;
+
     std_11_simple_allocator() = default;
 
     std_11_simple_allocator(size_t _increment) noexcept : PoolIncrement(_increment){};
@@ -22,6 +24,12 @@ struct std_11_simple_allocator
     {
         PoolSize = a.PoolSize;
         PoolIncrement = a.PoolIncrement;
+
+        if (a.SizeType == 0)
+            SizeType = sizeof(T);
+        else
+            SizeType = a.SizeType;
+
         array_pull.push_back(nullptr);
         array_pull.back().reset(reinterpret_cast<T *>(::operator new(PoolSize * sizeof(T))));
         array_size.push_back(std::make_pair(PoolSize, usedIndex(PoolSize, 0)));
@@ -29,6 +37,11 @@ struct std_11_simple_allocator
 
     T *allocate(std::size_t n)
     {
+        if (SizeType == 0)
+            SizeType = sizeof(T);
+        if (sizeof(T) != SizeType)
+            return reinterpret_cast<T *>(::operator new(sizeof(T)));
+
         T *res = nullptr;
 
         decltype(PoolSize) indexArray = 0;
@@ -84,7 +97,7 @@ struct std_11_simple_allocator
         {
             auto newPoolSize = PoolSize + array_size.size() * std::max(PoolIncrement, n);
             array_pull.push_back(nullptr);
-            array_pull.back().reset(reinterpret_cast<T *>(::operator new(newPoolSize * sizeof(T))));
+            array_pull.back().reset(reinterpret_cast<T *>(::operator new(newPoolSize *SizeType)));
             array_size.push_back(std::make_pair(newPoolSize, usedIndex(newPoolSize, 0)));
             PoolSize = newPoolSize;
             res = reinterpret_cast<T *>(array_pull.back().get());
@@ -103,6 +116,11 @@ struct std_11_simple_allocator
     {
         if (p == nullptr)
             return;
+        if (sizeof(T) != SizeType)
+        {
+            ::operator delete(p);
+            return;
+        }
         decltype(PoolSize) indexArray = 0;
         for (auto &ptr : array_pull)
         {
