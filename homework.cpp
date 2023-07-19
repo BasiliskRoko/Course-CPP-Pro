@@ -8,6 +8,13 @@
 #include <list>
 #include <algorithm>
 #include <iterator>
+
+/// <summary>
+/// Extract the byte representation of a structure from the memory stream.
+/// </summary>
+/// <typeparam name="T">The Type of the structure to extract from the memory stream.</typeparam>
+/// <param name="offset">The location of the structure in the memory stream.</param>
+/// <returns>The structure as byte span.</returns>
 namespace impl
 {
     template <typename Iterator>
