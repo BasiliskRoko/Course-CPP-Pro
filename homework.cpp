@@ -1,4 +1,11 @@
 
+/*!
+\file
+\brief Заголовочный файл с описанием классов
+
+Данный файл содержит в себе определения основных 
+классов, используемых в демонстрационной программе
+*/
 #include "lib.h"
 
 #include <iostream>
@@ -9,12 +16,7 @@
 #include <algorithm>
 #include <iterator>
 
-/// <summary>
-/// Extract the byte representation of a structure from the memory stream.
-/// </summary>
-/// <typeparam name="T">The Type of the structure to extract from the memory stream.</typeparam>
-/// <param name="offset">The location of the structure in the memory stream.</param>
-/// <returns>The structure as byte span.</returns>
+
 namespace impl
 {
     template <typename Iterator>
@@ -36,12 +38,27 @@ namespace impl
         std::cout << std::endl;
     }
 
+    /*!
+Копирует содержимое из исходной области памяти в целевую область память
+\param[in] i Количество байтов, которые необходимо скопировать
+\return Сумму двух чисел, переданных в качестве аргументов
+*/
     int print(int i)
     {
         std::cout << i;
         return 0;
     }
 
+/*!
+	\brief Родительский класс, не несущий никакой смысловой нагрузки
+
+	Данный класс имеет только одну простую цель: проиллюстрировать то,
+	как Doxygen документирует наследование 
+    \author Norserium
+	\version 1.0
+	\date Март 2015 года
+	\warning Данный класс создан только в учебных целях
+*/
     struct HelperCallable
     {
         template <typename... Args>
@@ -81,6 +98,7 @@ namespace impl
         print(value.begin(), value.end(), *value.begin());
     }
 
+
     template <typename T>
     void print_ip(T value,
                   typename std::enable_if<
@@ -102,6 +120,10 @@ void print_ip(T value)
     impl::print_ip(value);
 }
 
+/*!
+Находит сумму двух чисел
+\return Сумму двух чисел, переданных в качестве аргументов
+*/
 int main(int, char const **)
 {
     print_ip(int8_t{-1});                           // 255
