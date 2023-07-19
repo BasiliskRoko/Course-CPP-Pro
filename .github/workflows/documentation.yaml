@@ -1,0 +1,32 @@
+name: Documentation generation CI
+
+on:
+ push:
+  branches: [ Lesson7 ]
+jobs:
+  build-documentation:
+ 
+    runs-on: ubuntu-latest
+    steps:
+    # checkout myBranch
+    - uses: actions/checkout@v2
+
+    # generate the C doxygen files
+    - name: Doxygen Action C
+      uses: mattnotmitt/doxygen-action@v1.3.1
+      with:
+        working-directory: "."
+        doxyfile-path: "./Doxyfile"
+    
+    
+   
+    # Deploy the HTML documentation to GitHub Pages
+    - name: GH Pages Deployment
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+       github_token: ${{ secrets.GITHUB_TOKEN }}
+       publish_dir: ./doc/html/
+       enable_jekyll: false
+       allow_empty_commit: false
+       force_orphan: true
+       publish_branch: gh-pages
