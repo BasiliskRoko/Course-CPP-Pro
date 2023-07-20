@@ -1,10 +1,14 @@
 
 /*!
 \file
-\brief Заголовочный файл с описанием классов
+\brief файл домашнего задания
+  
+    \author Aleksei
+    \version 1.0
+    \date Июль 2023 года
+    \warning Данный файл создан только в учебных целях
 
-Данный файл содержит в себе определения основных 
-классов, используемых в демонстрационной программе
+Данный файл содержит в себе функцию main и выполнение ДЗ
 */
 #include "lib.h"
 
@@ -16,113 +20,105 @@
 #include <algorithm>
 #include <iterator>
 
-
-namespace impl
-{
-    template <typename Iterator>
-    void print(Iterator begin, Iterator end, int)
-    {
-
-        Iterator it = begin;
-        for (int i = 0; it != end && i < 3; it++, ++i)
-            printf("%d.", *it);
-        printf("%d", *(it));
-        std::cout << std::endl;
-    }
-
-    template <typename T>
-    void print(T begin, T end, char)
-    {
-        std::for_each(begin, end, [](auto v)
-                      { printf("%c", v); });
-        std::cout << std::endl;
-    }
-
-    /*!
-Копирует содержимое из исходной области памяти в целевую область память
-\param[in] i Количество байтов, которые необходимо скопировать
-\return Сумму двух чисел, переданных в качестве аргументов
-*/
-    int print(int i)
-    {
-        std::cout << i;
-        return 0;
-    }
-
 /*!
-	\brief Родительский класс, не несущий никакой смысловой нагрузки
+Вывод контейнера int и то, что можно к нему не явно преобразовать. таким образом исключаем std::string
+\param[in] begin Итератор начала
+\param[in] end Итератор конца
+\param[in] notused целочисленный аргумент
 
-	Данный класс имеет только одну простую цель: проиллюстрировать то,
-	как Doxygen документирует наследование 
-    \author Norserium
-	\version 1.0
-	\date Март 2015 года
-	\warning Данный класс создан только в учебных целях
 */
-    struct HelperCallable
-    {
-        template <typename... Args>
-        void operator()(const Args &...tupleArgs)
-        {
-            size_t index = 0;
-            auto printElem = [&index](const auto &x)
-            {
-                if (index++ > 0)
-                    std::cout << ".";
-                std::cout << x;
-            };
-
-            (printElem(tupleArgs), ...);
-            std::cout << std::endl;
-        }
-    };
-
-    template <typename... T>
-    void func(std::tuple<T...> t)
-    {
-        std::apply(HelperCallable(), t);
-    };
-
-    template <typename... T,
-              typename std::enable_if<!std::is_integral<T...>::value>::type * = {}>
-    void print_ip(T &&...a)
-    {
-        func(a...);
-    }
-
-    template <typename T>
-    auto print_ip(T value,
-                  typename std::enable_if<
-                      !std::is_integral<T>::value>::type * = {}) -> decltype(value.clear())
-    {
-        print(value.begin(), value.end(), *value.begin());
-    }
-
-
-    template <typename T>
-    void print_ip(T value,
-                  typename std::enable_if<
-                      std::is_integral<T>::value>::type * = {})
-    {
-        unsigned char *p = (unsigned char *)&value;
-        size_t i;
-        for (i = sizeof(T) - 1; i > 0; i--)
-            printf("%d.", static_cast<int>(p[i]));
-        printf("%d", static_cast<int>(p[i]));
-        std::cout << std::endl;
-    }
-
-} // impl
-
-template <typename T>
-void print_ip(T value)
+template <typename Iterator>
+void print(Iterator begin, Iterator end, int)
 {
-    impl::print_ip(value);
+    Iterator it = begin;
+    for (int i = 0; it != end; it++, ++i)
+    {
+        if (i > 0)
+            std::cout << ".";
+        std::cout << *it;
+    }
+    std::cout << std::endl;
 }
 
 /*!
-Находит сумму двух чисел
-\return Сумму двух чисел, переданных в качестве аргументов
+Вывод контейнера char и то, что можно к нему не явно преобразовать. таким образом выводим std::string
+\param[in] begin Итератор начала
+\param[in] end Итератор конца
+\param[in] notused целочисленный аргумент
+*/
+template <typename T>
+void print(T begin, T end, char)
+{
+    std::for_each(begin, end, [](auto v)
+                  { printf("%c", v); });
+    std::cout << std::endl;
+}
+
+/*!
+    \brief Объект для вывода кортежа через std::apply
+*/
+struct HelperCallable
+{
+    template <typename... Args>
+    void operator()(const Args &...tupleArgs)
+    {
+        size_t index = 0;
+        auto printElem = [&index](const auto &x)
+        {
+            if (index++ > 0)
+                std::cout << ".";
+            std::cout << x;
+        };
+
+        (printElem(tupleArgs), ...);
+        std::cout << std::endl;
+    }
+};
+
+/*!
+Функция вывода tuple типа
+\param[in] value значение
+*/
+template <typename... T,
+          typename std::enable_if<!std::is_integral<T...>::value>::type * = {}>
+void print_ip(T &&...value)
+{
+    std::apply(HelperCallable(), value...);
+}
+
+/*!
+Функция вывода контейнерного типа
+\param[in] value значение
+*/
+template <typename T>
+auto print_ip(T value,
+              typename std::enable_if<
+                  !std::is_integral<T>::value>::type * = {}) -> decltype(value.clear())
+{
+    print(value.begin(), value.end(), *value.begin());
+}
+
+/*!
+Функция вывода целочисленного типа и, что можно к нему не явно преобразовать в побайтовом виде
+\param[in] value значение
+*/
+template <typename T>
+void print_ip(T value,
+              typename std::enable_if<
+                  std::is_integral<T>::value>::type * = {})
+{
+    unsigned char *p = (unsigned char *)&value;
+    size_t i;
+    for (i = sizeof(T) - 1; i > 0; i--)
+        printf("%d.", static_cast<int>(p[i]));
+    printf("%d", static_cast<int>(p[i]));
+    std::cout << std::endl;
+}
+
+/*!
+Функция main
+последовательно выполняем требуемые кейсы
+\return 0
 */
 int main(int, char const **)
 {
