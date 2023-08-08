@@ -3,3 +3,5 @@ build/
 .cache/
 .clang-tidy
 doc/
+test/
+test2/
