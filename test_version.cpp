@@ -12,13 +12,13 @@ protected:
     // void TearDown() override {}
 public:
 };
-
+/*
 TEST_F(HomeWorkTest, factorial_1)
 {
     // auto index = 1;
     //  EXPECT_EQ(factorial(index), 1);
 }
-
+*/
 TEST(test_version, test_valid_version)
 {
     EXPECT_TRUE(version() > 0);

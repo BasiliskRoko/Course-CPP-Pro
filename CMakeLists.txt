@@ -22,7 +22,7 @@ endif()
 
 configure_file(version.h.in version.h)
 
-add_executable(bayan homework.cpp)
+add_executable(bulk homework.cpp)
 
 add_library(lib lib.cpp)
 
@@ -30,7 +30,7 @@ add_executable(test_version test_version.cpp)
 
 
 
-list(APPEND TARGETS bayan lib   
+list(APPEND TARGETS bulk lib   
 test_version)
 
 foreach(target ${TARGETS})
@@ -57,7 +57,7 @@ target_include_directories(lib
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(bayan PRIVATE
+target_link_libraries(bulk PRIVATE
     ${Boost_LIBRARIES}
     lib
 )
@@ -76,7 +76,7 @@ target_link_libraries(test_version PRIVATE GTest::GTest
 
 
 
-install(TARGETS bayan RUNTIME DESTINATION bin)
+install(TARGETS bulk RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
